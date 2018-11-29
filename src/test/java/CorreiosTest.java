@@ -16,10 +16,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class CorreiosTest {
    
+	private String objetoPostado = "BE315309539BR";
+	private String objetoEntregue = "PS526891317BR";
 	private String objetoNaoExistente = "PP170914586BR";
 	private String objetoNaoRetiradoCorreio = "AA123456789BR";
 	private String expectedMessageObjetoInexistente = "O nosso sistema não possui dados sobre o objeto informado.";
 	private String expectedMessageObjetoNaoRetiradoCorreio = "Destinatário não retirou objeto na Unidade dos Correios";
+	private String expectedMessageObjetoPostado = "Objeto postado";
+	private String expectedMessageObjetoEntregue = "Objeto entregue ao destinatário";
 	private WebDriver driver;
 	
 	@BeforeClass
@@ -61,6 +65,30 @@ public class CorreiosTest {
 		
 		WebElement returnMessage = driver.findElement(By.xpath("/html/body/div[1]/div[3]/div[2]/div/div/div[2]/div[2]/div[3]/div[1]/div[2]/strong"));
 		assertEquals(expectedMessageObjetoNaoRetiradoCorreio, returnMessage.getText());
+	}
+	
+	@Test
+	public void test_ObjetoNaoChegou() {
+		WebElement textArea = buildTextArea(driver, "//*[@id=\"objetos\"]");
+		textArea.sendKeys(objetoPostado);
+		
+		WebElement button = driver.findElement(By.xpath("//*[@id=\"btnPesq\"]"));
+		button.click();
+		
+		WebElement returnMessage = driver.findElement(By.xpath("/html/body/div[1]/div[3]/div[2]/div/div/div[2]/div[2]/div[3]/div[1]/div[2]/strong"));
+		assertEquals(expectedMessageObjetoPostado, returnMessage.getText());
+	}
+	
+	@Test
+	public void test_ObjetoEntregue() {
+		WebElement textArea = buildTextArea(driver, "//*[@id=\"objetos\"]");
+		textArea.sendKeys(objetoEntregue);
+		
+		WebElement button = driver.findElement(By.xpath("//*[@id=\"btnPesq\"]"));
+		button.click();
+		
+		WebElement returnMessage = driver.findElement(By.xpath("/html/body/div[1]/div[3]/div[2]/div/div/div[2]/div[2]/div[3]/div[1]/div[2]/strong"));
+		assertEquals(expectedMessageObjetoEntregue, returnMessage.getText());
 	}
 
 	private WebElement buildTextArea(WebDriver driver, String xpath) {
