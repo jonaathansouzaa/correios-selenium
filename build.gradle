@@ -24,5 +24,7 @@ dependencies {
     testCompile('junit:junit:4.12')
 }
 
+mainClassName = 'com.correios.app.Correios'
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
